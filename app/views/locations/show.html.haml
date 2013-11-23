@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Uuid:
+  = @location.uuid
+%p
+  %b Deviceid:
+  = @location.deviceid
+%p
+  %b Latitude:
+  = @location.latitude
+%p
+  %b Longitude:
+  = @location.longitude
+
+= link_to 'Edit', edit_location_path(@location)
+\|
+= link_to 'Back', locations_path
