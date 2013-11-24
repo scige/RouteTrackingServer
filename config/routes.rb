@@ -1,5 +1,7 @@
 RouteTrackingServer::Application.routes.draw do
-  resources :locations
+  resources :locations do
+    post :upload, :on => :collection
+  end
 
 
   # You can have the root of your site routed with "root"

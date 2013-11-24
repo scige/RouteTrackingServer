@@ -1,4 +1,6 @@
 class LocationsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+
   # GET /locations
   # GET /locations.json
   def index
@@ -78,6 +80,24 @@ class LocationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to locations_url }
       format.json { head :no_content }
+    end
+  end
+
+  def upload
+    @location = Location.new
+    @location.uuid = params[:uuid]
+    @location.deviceid = params[:deviceid]
+    @location.latitude = params[:latitude]
+    @location.longitude = params[:longitude]
+
+    respond_to do |format|
+      if @location.save
+        format.html { redirect_to @location, notice: 'Location was successfully created.' }
+        format.json { render json: @location, status: :created, location: @location }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @location.errors, status: :unprocessable_entity }
+      end
     end
   end
 end
