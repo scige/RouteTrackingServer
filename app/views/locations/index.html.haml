@@ -6,6 +6,7 @@
     %th Deviceid
     %th Latitude
     %th Longitude
+    %th Created_at
     %th
     %th
     %th
@@ -16,6 +17,7 @@
       %td= location.deviceid
       %td= location.latitude
       %td= location.longitude
+      %td= location.created_at
       %td= link_to 'Show', location
       %td= link_to 'Edit', edit_location_path(location)
       %td= link_to 'Destroy', location, :method => :delete, :data => { :confirm => 'Are you sure?' }
