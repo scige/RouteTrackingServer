@@ -1,6 +1,7 @@
 RouteTrackingServer::Application.routes.draw do
   resources :locations do
     post :upload, :on => :collection
+    get :map, :on => :collection
   end
 
 

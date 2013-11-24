@@ -1,0 +1,48 @@
+<script>
+    // 解决baidu地图有时候没有响应的问题，加载DOM完成后再加载地图
+    // jquery风格的不好使，不知道为什么？只能使用javascript原生的
+    //$(function(){
+    window.onload = function(){
+        var map = new BMap.Map("route-map");
+        var point = new BMap.Point(126.510935, 43.82132);
+        map.centerAndZoom(point,16);
+        // 禁止鼠标滚动，用户体验更好
+        map.enableScrollWheelZoom();
+        map.addControl(new BMap.NavigationControl());
+        //map.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_ZOOM}));
+
+        function addMarkerContent(point, content){
+            var myIcon = new BMap.Icon("/assets/map_mark.png", new BMap.Size(11,18));
+            var marker = new BMap.Marker(point, {icon: myIcon});
+            map.addOverlay(marker);
+            var infoWindow = new BMap.InfoWindow(content);
+            marker.addEventListener("click", function(){this.openInfoWindow(infoWindow);});
+        }
+
+        function addPolyline(point1, point2){
+            var polyline = new BMap.Polyline([point1, point2],
+                {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5}
+            );
+            map.addOverlay(polyline);
+        }
+
+        <% @locations.each do |location| %>
+            var point = new BMap.Point(<%= location.longitude %>, <%= location.latitude %>);
+            var content = "";
+            addMarkerContent(point, content);
+        <% end %>
+
+        <% i = 1 %>
+        <% while i < @locations.size %>
+            <% location = @locations[i-1] %>
+            var lastPoint = new BMap.Point(
+                <%= location.longitude %>, <%= location.latitude %>);
+            <% location = @locations[i] %>
+            var curPoint = new BMap.Point(
+                <%= location.longitude %>, <%= location.latitude %>);
+            addPolyline(lastPoint, curPoint);
+        <% i = i+1 %>
+        <% end %>
+    };
+    //});
+</script>
